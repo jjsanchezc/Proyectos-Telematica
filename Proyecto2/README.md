@@ -10,3 +10,20 @@ el escenario desplegado.
 ## Versión:
 - Fecha de Creación: septiembre 26.
 - Fecha de primera actualización: octubre 2 .
+
+
+## LISTA DE COSAS PARA HACER
+- la empresa cuenta con un catalogo de 50 productos
+- cada producto debe tener una seccion de comentarios, para ver lo que piensan los usuarios acerca de cada uno de los productos (max 150 palabras)
+- la aplicacion debe capturar: 
+    - nombre
+    - edad
+    - ciudad
+    - dirección
+    - correo electronico
+- debe permitir la visualización de cada uno de los productos que tiene la compañia
+
+- disponibilidad minima de 99.5%
+- soportar miles de usuarios
+- escalar de manera horizontal
+### REVISAR SI FALTAN MAS COSAS
