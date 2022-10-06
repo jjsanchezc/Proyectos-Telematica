@@ -1,0 +1,17 @@
+<html>
+    <h4>primero que todo necesitamos tu:</h4>
+    <form method="POST">
+        {% csrf_token %}
+        <li>Nombre: <input type="text" name="nombre" placeholder="holaa"></li>
+        <li>Edad: <input type="text" name="edad"></li>
+        <li>Ciudad: <input type="text"name="direccion"></li>
+        <li>Direccion: <input type="text"name="direccion"></li>
+        <li>Correo: <input type="text"name="correo"></li>
+        <button type="submit">Enviar</button>
+    </form>
+    <form>
+        <button formaction="{% url 'seleccion' %}">volver</button>
+    </form>
+    </html>
+
+    
