@@ -25,14 +25,20 @@ def main():
 	except Exception as e:
 		print(e)
 		sys.exit(2)
+
 	while True:
 		try:
 			conn, addr = s.accept()
 			#print(f'conn= {conn}, \naddr= {addr}', conn, addr)
 			data = conn.recv(buffer_size)
 			ip_server_list=config.get('DEFAULT','ip_server')
+			print('WEBSERVER1',ip_server_list[0])
 			# Round Robin
-			webserver = ip_server_list[it%len(ip_server_list)]
+			print('EMPIEZA EL ROUND ROBIN')
+			if it>=len(ip_server_list):
+				it=0
+			webserver = ip_server_list[it]
+			print(f'ESTE ES EL WEBSERVER {webserver} ',webserver)
 			it+=1
 			start_new_thread(proxy_server, (webserver, listen_port, conn, data, addr))
 
