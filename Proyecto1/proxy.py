@@ -58,8 +58,8 @@ def proxy_server(webserver, port, conn, data, addr):
 	try:
 		print(data)
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		#round
 		s.connect((webserver, port))
+		# print('ok')
 		s.send(data)
 
 		while True:
