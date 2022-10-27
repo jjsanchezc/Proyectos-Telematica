@@ -1,78 +1,51 @@
 import socket
 import sys
 from _thread import *
+import configparser as confp
 
 def main():
 	global listen_port, buffer_size, max_conn
+	it=0
 	try:
-		listen_port = int(input('litening port: '))
+		config = confp.ConfigParser()
+		config.read("parser.ini")
+		listen_port=int(config.get('DEFAULT','port'))
+		max_conn=int(config.get('DEFAULT','max_conn'))
+		buffer_size=int(config.get('DEFAULT','buffer_size'))
 	except KeyboardInterrupt:
 		sys.exit(0)
-
-	max_conn = 5
-	buffer_size = 8192
-
 	try:
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		s.bind(('', listen_port))
 		s.listen(max_conn)
-
 		print('[*] Init socket... Done.')
 		print('[*] socket binded successfully...')
 		print('[*] Server started successfully [{}]'.format(listen_port))
+		
 	except Exception as e:
 		print(e)
 		sys.exit(2)
-
 	while True:
 		try:
 			conn, addr = s.accept()
+			#print(f'conn= {conn}, \naddr= {addr}', conn, addr)
 			data = conn.recv(buffer_size)
-			start_new_thread(conn_string, (conn, data, addr))
+			ip_server_list=config.get('DEFAULT','ip_server')
+			# Round Robin
+			webserver = ip_server_list[it%len(ip_server_list)]
+			it+=1
+			start_new_thread(proxy_server, (webserver, listen_port, conn, data, addr))
+
 		except KeyboardInterrupt:
 			s.close()
 			print('\n[*] Shutting down...')
 			sys.exit(1)
 
-
-def conn_string(conn, data, addr):
-	try:
-		# print(data)
-		first_line = data.split(b'\n')[0]
-		url = first_line.split()[1]		
-
-		http_pos = url.find(b'://')
-		if http_pos == -1:
-			temp = url
-		else:
-			temp = url[(http_pos + 3):]
-
-		port_pos = temp.find(b':')
-
-		webserver_pos = temp.find(b'/')
-
-		if webserver_pos == -1:
-			webserver_pos = len(temp)
-		webserver = ""
-		port = -1
-
-		if port_pos == -1 or webserver_pos < port_pos:
-			port = 80
-			webserver = temp[:webserver_pos]
-		else:
-			port = int(temp[(port_pos + 1):][:webserver_pos - port_pos - 1])
-			webserver = temp[:port_pos]
-
-		print(webserver)
-		proxy_server(webserver, port, conn, data, addr)
-	except Exception:
-		pass
-
-
 def proxy_server(webserver, port, conn, data, addr):
 	try:
-		# print(data)
+		print(data)
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		#round
 		s.connect((webserver, port))
 		s.send(data)
 
@@ -86,7 +59,7 @@ def proxy_server(webserver, port, conn, data, addr):
 				dar = float(dar/1024)
 				dar = '{}.3s'.format(dar)
 				print('[*] Request done: {} => {} <= {}'.format(addr[0], 
-				dar, socket.gethostbyname(webserver)))
+				dar, webserver))
 			else:
 				break
 
