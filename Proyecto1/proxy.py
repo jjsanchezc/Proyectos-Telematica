@@ -3,15 +3,24 @@ import sys
 from _thread import *
 import configparser as confp
 
+config_prede={
+        "port":8080,
+        "max_conn": 5,
+        "buffer_size": 8192,
+        "ttl":180,
+        "ip_server": [
+            "34.204.107.148",
+            "3.92.231.50",
+            "44.201.131.175"
+        ]
+}
 def main():
 	global listen_port, buffer_size, max_conn
 	it=0
 	try:
-		config = confp.ConfigParser()
-		config.read("parser.ini")
-		listen_port=int(config.get('DEFAULT','port'))
-		max_conn=int(config.get('DEFAULT','max_conn'))
-		buffer_size=int(config.get('DEFAULT','buffer_size'))
+		listen_port=int(config_prede["port"])
+		max_conn=int(config_prede['max_conn'])
+		buffer_size=int(config_prede['buffer_size'])
 	except KeyboardInterrupt:
 		sys.exit(0)
 	try:
@@ -31,16 +40,14 @@ def main():
 			conn, addr = s.accept()
 			#print(f'conn= {conn}, \naddr= {addr}', conn, addr)
 			data = conn.recv(buffer_size)
-			ip_server_list=config.get('DEFAULT','ip_server')
-			print('WEBSERVER1',ip_server_list[0])
+			ip_server_list=config_prede['ip_server']
 			# Round Robin
 			print('EMPIEZA EL ROUND ROBIN')
 			if it>=len(ip_server_list):
 				it=0
 			webserver = ip_server_list[it]
-			print(f'ESTE ES EL WEBSERVER {webserver} ',webserver)
 			it+=1
-			start_new_thread(proxy_server, (webserver, listen_port, conn, data, addr))
+			start_new_thread(proxy_server,(webserver, listen_port, conn, data, addr))
 
 		except KeyboardInterrupt:
 			s.close()
