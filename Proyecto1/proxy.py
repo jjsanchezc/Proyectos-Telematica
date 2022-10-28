@@ -53,6 +53,23 @@ def main():
 			s.close()
 			print('\n[*] Shutting down...')
 			sys.exit(1)
+   
+def cache_server(header_request, time):
+    '''
+    implentación caché
+    se verifica en el diccionario si la llave(header) ya existe, es decir,
+    ya se ha hecho ese request, en caso de que si, se verifica el time del request en el dic.
+    key --> header
+    content --> tupla(contenido, time)
+    TTL --> now-time, si now-time > TTL:
+			hace request, se envía request proxy_server
+			crea la nueva copia en el caché
+		else:
+			se envía lo que hay en caché
+    '''
+    cache={}
+	# cache['nombre']=valor
+
 
 def proxy_server(webserver, port, conn, data, addr):
 	try:
