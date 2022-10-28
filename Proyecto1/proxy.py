@@ -9,9 +9,9 @@ config_prede={
         "buffer_size": 8192,
         "ttl":180,
         "ip_server": [
-            "34.204.107.148",
-            "3.92.231.50",
-            "44.201.131.175"
+            "54.90.229.206",
+            "54.174.158.86",
+            "34.201.172.25"
         ]
 }
 def main():
@@ -72,13 +72,15 @@ def cache_server(header_request, time):
 
 
 def proxy_server(webserver, port, conn, data, addr):
+	print('empieza el proxy server')
 	try:
 		print(data)
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		#round
 		s.connect((webserver, port))
-		# print('ok')
+		print('se conectó',webserver)
 		s.send(data)
-
+		print('se envio la data')
 		while True:
 			reply = s.recv(buffer_size)
 
@@ -90,6 +92,7 @@ def proxy_server(webserver, port, conn, data, addr):
 				dar = '{}.3s'.format(dar)
 				print('[*] Request done: {} => {} <= {}'.format(addr[0], 
 				dar, webserver))
+				print(reply)
 			else:
 				break
 
