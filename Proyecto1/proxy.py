@@ -1,9 +1,10 @@
 import socket
 import sys
 from _thread import *
-import configparser as confp
+import time
+import os
 
-config_prede={
+configuracion_predeterminada={
         "port":8080,
         "max_conn": 5,
         "buffer_size": 8192,
@@ -14,6 +15,8 @@ config_prede={
             "52.23.211.56"
         ]
 }
+cache={}
+
 def main():
 	global listen_port, buffer_size, max_conn
 	it=0
@@ -40,6 +43,11 @@ def main():
 			conn, addr = s.accept()
 			#print(f'conn= {conn}, \naddr= {addr}', conn, addr)
 			data = conn.recv(buffer_size)
+			#ACA VA EL chache_server()
+			deco_data=conn.recv(1024).decode()
+			headers=deco_data.split('\n')
+			header=headers[0].split()
+			#cache_server(header,time.time.clock_gettime())
 			ip_server_list=config_prede['ip_server']
 			# Round Robin
 			print('EMPIEZA EL ROUND ROBIN')
@@ -54,7 +62,7 @@ def main():
 			print('\n[*] Shutting down...')
 			sys.exit(1)
    
-def cache_server(header_request, time):
+def cache_server(header_request, time)->bool:
     '''
     implentación caché
     se verifica en el diccionario si la llave(header) ya existe, es decir,
@@ -67,8 +75,11 @@ def cache_server(header_request, time):
 		else:
 			se envía lo que hay en caché
     '''
-    cache={}
-	# cache['nombre']=valor
+    if header_request in cache:
+        #si está guardado, debe entrar aca
+        return True 
+    return False
+
 
 
 def proxy_server(webserver, port, conn, data, addr):
@@ -78,6 +89,7 @@ def proxy_server(webserver, port, conn, data, addr):
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		#round
 		s.connect((webserver, port))
+		#Aca debe de guardar el valor en el cache (TOCA VER QUE PONEMOS DESPUES)
 		print('se conectó',webserver)
 		s.send(data)
 		print('se envio la data')
@@ -86,7 +98,6 @@ def proxy_server(webserver, port, conn, data, addr):
 
 			if len(reply) > 0:
 				conn.send(reply)
-
 				dar = float(len(reply))
 				dar = float(dar/1024)
 				dar = '{}.3s'.format(dar)
