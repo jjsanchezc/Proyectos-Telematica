@@ -4,7 +4,7 @@ from _thread import *
 import time
 import os
 
-configuracion_predeterminada={
+config_prede={
         "port":8080,
         "max_conn": 5,
         "buffer_size": 8192,
