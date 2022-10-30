@@ -13,8 +13,7 @@ config["DEFAULT"] = {
 with open("parser.json","w") as f:
     config.write(f)
 
-
-
+'''
 config_prede={
         "port":8080,
         "max_conn": 5,
@@ -27,3 +26,4 @@ config_prede={
         ]
 }
 configuration=json.dumps(config_prede)
+'''

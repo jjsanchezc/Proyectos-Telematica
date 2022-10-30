@@ -8,13 +8,14 @@ config_prede={
         "port":8080,
         "max_conn": 5,
         "buffer_size": 8192,
-        "ttl":180,
+        "ttl":10,
         "ip_server": [
-            "54.226.5.142",
-            "3.82.226.107",
-            "52.23.211.56"
+            "54.87.199.93",
+            "52.23.226.189",
+            "44.211.167.229"
         ]
 }
+
 cache={}
 
 def main():
@@ -24,6 +25,7 @@ def main():
 		listen_port=int(config_prede["port"])
 		max_conn=int(config_prede['max_conn'])
 		buffer_size=int(config_prede['buffer_size'])
+		ttl=int(config_prede['ttl'])
 	except KeyboardInterrupt:
 		sys.exit(0)
 	try:
@@ -44,25 +46,28 @@ def main():
 			#print(f'conn= {conn}, \naddr= {addr}', conn, addr)
 			data = conn.recv(buffer_size)
 			#ACA VA EL chache_server()
-			deco_data=conn.recv(1024).decode()
-			headers=deco_data.split('\n')
-			header=headers[0].split()
-			#cache_server(header,time.time.clock_gettime())
-			ip_server_list=config_prede['ip_server']
+			#deco_data=conn.recv(1024).decode()
+			header=data.split(b'\n')[0]
+			#header=headers[0].split()
+			curr_time = time.mktime(time.gmtime())
+			if header in cache and abs(cache[header][1]-curr_time) <= ttl:
+				cache_server(header, conn, addr)
+			else:
+				ip_server_list=config_prede['ip_server']
 			# Round Robin
-			print('EMPIEZA EL ROUND ROBIN')
-			if it>=len(ip_server_list):
-				it=0
-			webserver = ip_server_list[it]
-			it+=1
-			start_new_thread(proxy_server,(webserver, listen_port, conn, data, addr))
+				print('EMPIEZA EL ROUND ROBIN')
+				if it>=len(ip_server_list):
+					it=0
+				webserver = ip_server_list[it]
+				it+=1
+				start_new_thread(proxy_server,(webserver, listen_port, conn, data, addr, header))
 
 		except KeyboardInterrupt:
 			s.close()
 			print('\n[*] Shutting down...')
 			sys.exit(1)
    
-def cache_server(header_request, time)->bool:
+def cache_server(header, conn, addr):
     '''
     implentación caché
     se verifica en el diccionario si la llave(header) ya existe, es decir,
@@ -75,14 +80,14 @@ def cache_server(header_request, time)->bool:
 		else:
 			se envía lo que hay en caché
     '''
-    if header_request in cache:
-        #si está guardado, debe entrar aca
-        return True 
-    return False
+    resp = cache[header][0]
+    conn.send(resp)
+    print(f'[*] Request done. Cache response to => {addr[0]}\n{resp}')
 
 
 
-def proxy_server(webserver, port, conn, data, addr):
+
+def proxy_server(webserver, port, conn, data, addr, header):
 	print('empieza el proxy server')
 	try:
 		print(data)
@@ -90,7 +95,7 @@ def proxy_server(webserver, port, conn, data, addr):
 		#round
 		s.connect((webserver, port))
 		#Aca debe de guardar el valor en el cache (TOCA VER QUE PONEMOS DESPUES)
-		print('se conectó',webserver)
+		print('se conectó a ',webserver)
 		s.send(data)
 		print('se envio la data')
 		while True:
@@ -104,6 +109,8 @@ def proxy_server(webserver, port, conn, data, addr):
 				print('[*] Request done: {} => {} <= {}'.format(addr[0], 
 				dar, webserver))
 				print(reply)
+				new_time = time.mktime(time.gmtime())
+				cache[header] = (reply, new_time)
 			else:
 				break
 
