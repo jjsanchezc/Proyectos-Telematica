@@ -1,9 +1,4 @@
 # Proyecto 2 Telematica
-## Autores
-
-- Isaac Tadina
-- Juan José Sanchez
-- Daniel Jaramillo
 
 ##  Despliegue aplicacion y NGINX
 
@@ -37,6 +32,8 @@ server {
 } 
 ```
 ## Configuracion del balanceador de cargas
+
+Siguiendo los siguientes comandos entramos a la configutacion del balanceador de carga:
 
 ```
 cd /etc/nginx/sites-enabled
@@ -72,5 +69,10 @@ Antes de que empiecen las lineas blancas que aparecen, están los datos que los 
 - https://www.redhat.com/es/topics/cloud-computing/what-is-iaas
 - https://www.digitalocean.com/community/tutorials/how-to-configure-bind-as-a-private-network-dns-server-on-centos-7
 
+## Autores
+
+- Isaac Tadina
+- Juan José Sanchez
+- Daniel Jaramillo
 
 
