@@ -2,19 +2,10 @@ import socket
 import sys
 from _thread import *
 import time
-import os
+from configparser import ConfigParser
 
-config_prede={
-        "port":8080,
-        "max_conn": 5,
-        "buffer_size": 8192,
-        "ttl":10,
-        "ip_server": [
-            "54.87.199.93",
-            "52.23.226.189",
-            "44.211.167.229"
-        ]
-}
+config = ConfigParser()
+config.read('parser.ini')
 
 cache={}
 
@@ -22,10 +13,10 @@ def main():
 	global listen_port, buffer_size, max_conn
 	it=0
 	try:
-		listen_port=int(config_prede["port"])
-		max_conn=int(config_prede['max_conn'])
-		buffer_size=int(config_prede['buffer_size'])
-		ttl=int(config_prede['ttl'])
+		listen_port=int(config["port"])
+		max_conn=int(config['max_conn'])
+		buffer_size=int(config['buffer_size'])
+		ttl=int(config['ttl'])
 	except KeyboardInterrupt:
 		sys.exit(0)
 	try:
@@ -53,7 +44,7 @@ def main():
 			if header in cache and abs(cache[header][1]-curr_time) <= ttl:
 				cache_server(header, conn, addr)
 			else:
-				ip_server_list=config_prede['ip_server']
+				ip_server_list=[config['ip_server1'], config['ip_server2'], config['ip_server3']]
 			# Round Robin
 				print('EMPIEZA EL ROUND ROBIN')
 				if it>=len(ip_server_list):
