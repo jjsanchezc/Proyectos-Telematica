@@ -27,12 +27,12 @@ todas tres corriendo el mismo recurso (replicado), en el puerto 8080; una págin
 
 para correr los servidores es necesario seguir la ruta a continuación dentro de la instancia:
 
-```http
+```
   ubuntu@ip-instance:~/st0255-2022/LabWebService N4/WebApp-Node/api
 ```
 y ejecutar el siguiente comando:
 
-```http
+```
   $ sudo node index.js
 ```
 
@@ -55,7 +55,7 @@ Cuando se hace una petición que termina siendo gestionada por algún servidor, 
 caché.
 
 Para correr el proxy es necesario ubicarse en el directorio root de la instancia y ejecutar el siguiente comando:
-```http
+```
   $ python3 parser.py
 ```
 Esto generará un archivo con los settings por default. son los siguientes:
@@ -65,7 +65,7 @@ Esto generará un archivo con los settings por default. son los siguientes:
 * *ttl:* tiempo de vida de los recursos (20 segundos por default).
 * *ip_serverX:* dirección IP pública v4 del servidor X (X de 1 a 3).
 
-```http
+```
   [DEFAULT]
   port = 8080
   max_conn = 5
@@ -77,30 +77,30 @@ Esto generará un archivo con los settings por default. son los siguientes:
 ```
 
 En caso de querer cambiar algún valor, desde la dirección root de la instancia ejecutar:
-```http
+```
   $ nano parser.ini
 ```
 Efectuar los cambios y guardar.
 
 Es necesario ejecutar primero el parser para poder generar el archivo de configuración,
 seguidamente se puede el proxy. Para ello desde dirección root ejecutar:
-```http
+```
   $ python3 proxy.py
 ```
 Aparecerá en consola lo siguiente:
-```http
+```
   [*] Init socket... Done.
   [*] socket binded successfully...
   [*] Server started successfully [8080]
 ```
 Lo cual significa que el proxy está escuchando peticiones en el puerto 8080, la data traída
 de cada response será visible en consola, antecedida por una descripción como:
-```http
+```
   [*] Request done: 181.136.32.82 => 0.2587890625.3s <= 54.152.81.179
 ```
 IP del cliente => tiempo de ejecución <= IP del servidor.
 En caso de que la respuesta sea desde caché, se verá lo siguiente antes de la data:
-```http
+```
   [*] Request done. Cache response to => 181.136.32.82
 ```
 
