@@ -61,6 +61,8 @@ use paginaP2_db
 SELECT post_content FROM wp_posts;
 ```
 Antes de que empiecen las lineas blancas que aparecen, están los datos que los usuarios han montado
+## Pagina Web:
+- http://proyectotelematica2.tk/home/
 
 ## Referencias 
 - https://www.youtube.com/watch?v=hq8kWcpGUvw
