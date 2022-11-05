@@ -1,9 +1,11 @@
 # Proyecto 2 Telematica
 
+# Prueba 1
+
 ##  Despliegue aplicacion y NGINX
 
 En este proyecto podemos ver un desarollo de una aplicacion web en wordpress con el fin de dar a conocer los productos de una empresa y la opinion de las personas a cerca de esos productos con una cantidad maxima de 150 caracteres. 
-para poder hacer esto utilizamos wordpress para la modificacion y creacion de la pagina web, NGINX como servidor proxy inverso y configuramos el balanceador de carga tambien desde NGINX
+para poder hacer esto utilizamos wordpress para la modificacion y creacion de la pagina web, NGINX como servidor proxy inverso y configuramos el balanceador de carga 
 
 ##  Configuracion Proxy
 
@@ -42,7 +44,7 @@ abrimos el wordpress.conf, podemos ver que dentro de upstream php-handler hay di
 
 
 ## Desarrollo
-para empezar creamos la instancia HostMiCompany E2C en aws el cual tiene almacenado la base de datos de la pagina, la configuracion de la pagina desarollada en wordpress, la configuracion del NGINX como proxy y dentro del mismo aws configuramos un target group para si poder realizar un balanceador de carga
+Para empezar creamos la instancia HostMiCompany E2C en aws el cual tiene almacenado la base de datos de la pagina, la configuracion de la pagina desarollada en wordpress, la configuracion del NGINX como proxy y dentro del mismo aws configuramos un target group para si poder realizar un balanceador de carga
 ademas de tener la configuracion de los DNS  primario y secundario dentro de esta misma instancia.
 
 El proyecto cuenta con una infraestructura de nube IasS
@@ -63,6 +65,57 @@ SELECT post_content FROM wp_posts;
 Antes de que empiecen las lineas blancas que aparecen, están los datos que los usuarios han montado
 ## Pagina Web:
 - http://proyectotelematica2.tk/home/
+
+# Prueba 2 "corrección"
+
+## Despliegue de aplicación
+
+Para la corrección del proyecto anteriror hicimos una pagina de prueba en en wordpress
+
+## Proxy + Load Balancer 
+
+El proxy esta hecho en nginx y el balanceador de carga esta configurado desde la ocion de balanceador de aws
+
+### Configuración del load balancer
+
+```
+o<VirtualHost *:80>
+        # The ServerName directive sets the request scheme, hostname and port that
+        # the server uses to identify itself. This is used when creating
+        # redirection URLs. In the context of virtual hosts, the ServerName
+        # specifies what hostname must appear in the request's Host: header to
+        # match this virtual host. For the default virtual host (this file) this
+        # value is not decisive as it is used as a last resort host regardless.
+        # However, you must set it for any further virtual host explicitly.
+        #ServerName www.example.com
+
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/html/wordpress
+
+        # Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
+        # error, crit, alert, emerg.
+        # It is also possible to configure the loglevel for particular
+        # modules, e.g.
+        #LogLevel info ssl:warn
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+        # For most configuration files from conf-available/, which are
+        # enabled or disabled at a global level, it is possible to
+        # include a line for only one particular virtual host. For example the
+        # following line enables the CGI configuration for this host only
+        # after it has been globally disabled with "a2disconf".
+        #Include conf-available/serve-cgi-bin.conf
+</VirtualHost>
+
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet
+```
+## Desarrollo 
+
+Como en la prueba 1 hicimos las configuraciones de las instancias E2C los dos host, los DNS y su balanceador de carga, los dns estan configurados con bind9 y el proxy con nginx como en el proyecto anteriror, ademas de la app web de prueba que desarrollamos en wordpress con direccion a loadBalancerWS-1193972895.us-east-1.elb.amazonaws.com
+
+
 
 ## Referencias 
 - https://www.youtube.com/watch?v=hq8kWcpGUvw
