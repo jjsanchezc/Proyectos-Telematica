@@ -74,7 +74,7 @@ Para la corrección del proyecto anteriror hicimos una pagina de prueba en en wo
 
 ## Proxy + Load Balancer 
 
-El proxy esta hecho en nginx y el balanceador de carga esta configurado desde la ocion de balanceador de aws
+El proxy esta hecho en apache2 y el balanceador de carga esta configurado desde la opcion de balanceador de aws
 
 ### Configuración del load balancer
 
@@ -113,7 +113,7 @@ o<VirtualHost *:80>
 ```
 ## Desarrollo 
 
-Como en la prueba 1 hicimos las configuraciones de las instancias E2C los dos host, los DNS y su balanceador de carga, los dns estan configurados con bind9 y el proxy con nginx como en el proyecto anteriror, ademas de la app web de prueba que desarrollamos en wordpress con direccion a loadBalancerWS-1193972895.us-east-1.elb.amazonaws.com
+Como en la prueba 1 hicimos las configuraciones de las instancias E2C los dos host, los DNS y su balanceador de carga, los dns estan configurados con bind9 y el proxy con apache2 como en el proyecto anteriror, ademas de la app web de prueba que desarrollamos en wordpress con direccion a loadBalancerWS-1193972895.us-east-1.elb.amazonaws.com
 
 
 
