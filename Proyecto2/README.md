@@ -118,6 +118,7 @@ Como en la prueba 1 hicimos las configuraciones de las instancias E2C los dos ho
 
 
 ## Referencias 
+
 - https://www.youtube.com/watch?v=hq8kWcpGUvw
 - https://www.youtube.com/watch?v=Zv15U50oGbw
 - https://www.chakray.com/es/configura-nginx-loadbalancer-cluster-dos-nodos-wso2-                                                        ei/#:~:text=El%20balanceador%20de%20carga%20distribuye,de%20integraci%C3%B3n%20de%20c%C3%B3digo%20abierto.
@@ -125,6 +126,7 @@ Como en la prueba 1 hicimos las configuraciones de las instancias E2C los dos ho
 - https://www.digitalocean.com/community/tutorials/how-to-configure-bind-as-a-private-network-dns-server-on-centos-7
 - https://www.fosslinux.com/7631/how-to-install-and-configure-dns-on-ubuntu.htm
 - https://www.youtube.com/watch?v=4IuNKK2y49s
+- https://www.youtube.com/watch?v=8Uofkq718n8
 
 
 ## Autores
